@@ -27,6 +27,7 @@
             Grid.Column="0"
             Grid.Row="0"
             Margin="3"
+            IsEnabled="{Binding DirectoryTreeEnabled, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
             ItemsSource="{Binding DirectoryTree, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
             TreeViewItem.Expanded="TreeViewItem_OnExpanded"
             behaviors:TreeViewAttached.MonitorSelectedItem="True"
@@ -43,5 +44,17 @@
             Grid.Row="0"
             Margin="3"
             DataContext="{Binding SearcherVM, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <TreeView
+            Grid.Column="0" Grid.Row="1"
+            Margin="3">
+
+        </TreeView>
+
+        <ListBox
+            Grid.Column="1" Grid.Row="1"
+            Margin="3"
+            ItemsSource="{Binding FindedFiles, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+            SelectedItem="{Binding SelectedFile}" />
     </Grid>
 </UserControl>

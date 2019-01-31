@@ -5,22 +5,70 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SearchApp.Views"
              xmlns:selectors="clr-namespace:SearchApp.Resources.Templates.Selectors"
+             xmlns:converters="clr-namespace:SearchApp.Helpers.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
     <UserControl.Resources>
         <DataTemplate x:Key="WaitForStartTemplate">
-            <StackPanel HorizontalAlignment="Right" Grid.Row="3" Grid.Column="1" Orientation="Horizontal">
-                <Button Margin="3" MinWidth="100">Найти</Button>
+            <StackPanel
+                DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType={x:Type ContentControl}}, Mode=TwoWay}"
+                HorizontalAlignment="Right"
+                Orientation="Horizontal">
+                <Button
+                    Margin="3"
+                    MinWidth="100"
+                    Command="{Binding Path=StartCommand}" 
+                    Content="Найти" />
             </StackPanel>
         </DataTemplate>
 
         <DataTemplate x:Key="InProgressTemplate">
-            <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch">
-                <ProgressBar Margin="3" MinHeight="20" Value="10" Maximum="100" />
+            <StackPanel
+                DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType={x:Type ContentControl}}, Mode=TwoWay}"
+                Orientation="Vertical"
+                HorizontalAlignment="Stretch">
+                <ProgressBar
+                    Margin="3"
+                    MinHeight="20"
+                    Value="{Binding Progress}"
+                    Maximum="100" />
                 <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                    <Button Margin="3" MinWidth="100">Пауза</Button>
-                    <Button Margin="3" MinWidth="100">Остановить</Button>
+                    <Button
+                        Margin="3"
+                        MinWidth="100"
+                        Command="{Binding Path=PauseCommand}" 
+                        Content="Пауза" />
+                    <Button
+                        Margin="3"
+                        MinWidth="100"
+                        Command="{Binding Path=StopCommand}" 
+                        Content="Остановить" />
+                </StackPanel>
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="InPauseTemplate">
+            <StackPanel
+                DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType={x:Type ContentControl}}, Mode=TwoWay}"
+                Orientation="Vertical"
+                HorizontalAlignment="Stretch">
+                <ProgressBar
+                    Margin="3"
+                    MinHeight="20"
+                    Value="{Binding Progress}"
+                    Maximum="100" />
+                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                    <Button
+                        Margin="3"
+                        MinWidth="100"
+                        Command="{Binding Path=ResumeCommand}" 
+                        Content="Возобновить" />
+                    <Button
+                        Margin="3"
+                        MinWidth="100"
+                        Command="{Binding Path=StopCommand}" 
+                        Content="Остановить" />
                 </StackPanel>
             </StackPanel>
         </DataTemplate>
@@ -28,11 +76,16 @@
         <selectors:SearchTemplteButtonsSelector
             x:Key="templateSelector"
             InProgressTemplate="{StaticResource InProgressTemplate}"
+            InPauseTemplate="{StaticResource InPauseTemplate}"
             WaitForStartTemplate="{StaticResource WaitForStartTemplate}" />
+
+        <converters:InverseBooleanConverter
+            x:Key="inverseBooleanConverter"/>
 
     </UserControl.Resources>
 
     <Grid>
+
         <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -45,28 +98,61 @@
         </Grid.ColumnDefinitions>
 
         <TextBlock Padding="3" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0">Искать в директории</TextBlock>
+
         <Grid 
             Grid.Row="0" Grid.Column="1"
             DataContext="{Binding}">
+
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <TextBox Grid.Column="0" Margin="3" Text="{Binding SearchDirectoryName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-            <CheckBox Grid.Column="1" Margin="3" VerticalAlignment="Center" HorizontalAlignment="Right" IsChecked="{Binding IncludeSubdirectories}">Включая сабдиректории</CheckBox>
+
+            <TextBox
+                Grid.Column="0"
+                Margin="3"
+                IsEnabled="{Binding InProgress, Converter={StaticResource inverseBooleanConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                Text="{Binding SearchDirectoryName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}" />
+
+            <CheckBox
+                Grid.Column="1" Margin="3"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Right"
+                IsChecked="{Binding IncludeSubdirectories}"
+                IsEnabled="{Binding InProgress, Converter={StaticResource inverseBooleanConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                Content="Включая сабдиректории" />
         </Grid>
 
 
-        <TextBlock Padding="3" VerticalAlignment="Center" Grid.Row="1" Grid.Column="0">Имя файл</TextBlock>
-        <TextBox Margin="3" Grid.Row="1" Grid.Column="1" Text="{Binding FileName, Mode=OneWayToSource}" />
+        <TextBlock
+            Padding="3"
+            VerticalAlignment="Center"
+            Grid.Row="1" Grid.Column="0"
+            Text="Имя файл" />
 
-        <TextBlock Padding="3" VerticalAlignment="Center" Grid.Row="2" Grid.Column="0">Директория</TextBlock>
-        <TextBox Margin="3" Grid.Row="2" Grid.Column="1" Text="{Binding DirectoryName, Mode=OneWayToSource}" />
+        <TextBox
+            Margin="3"
+            Grid.Row="1" Grid.Column="1"
+            IsEnabled="{Binding InProgress, Converter={StaticResource inverseBooleanConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+            Text="{Binding FileName, Mode=OneWayToSource}" />
+
+        <TextBlock
+            Padding="3"
+            VerticalAlignment="Center"
+            Grid.Row="2" Grid.Column="0"
+            Text="Директория" />
+
+        <TextBox
+            Margin="3"
+            Grid.Row="2" Grid.Column="1"
+            IsEnabled="{Binding InProgress, Converter={StaticResource inverseBooleanConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+            Text="{Binding DirectoryName, Mode=OneWayToSource}" />
 
         <ContentControl
             Grid.Row="3"
             Grid.ColumnSpan="2"
-            Content="{Binding InProgress, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+            Content="{Binding SearchStatus, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+            DataContext="{Binding}"
             ContentTemplateSelector="{StaticResource templateSelector}" />
     </Grid>
 </UserControl>

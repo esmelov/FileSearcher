@@ -5,7 +5,6 @@ namespace SearchApp.Models
 {
     public class Node<T>
     {
-
         public Node(T current)
         {
             Current = current;
@@ -14,13 +13,7 @@ namespace SearchApp.Models
 
         public T Current { get; set; }
         public ObservableCollection<Node<T>> Nodes { get; set; }
-
-        public bool HasChildes
-        {
-            get
-            {
-                return Nodes.Any();
-            }
-        }
+        public object Tag { get; set; }
+        public bool HasChildes => Nodes.Any();
     }
 }

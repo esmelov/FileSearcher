@@ -57,9 +57,11 @@
     </ApplicationDefinition>
     <Compile Include="Behaviors\TreeViewAttached.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
-    <Compile Include="Interfaces\ISearcher.cs" />
+    <Compile Include="Enums\OperationStatus.cs" />
+    <Compile Include="Helpers\Converters\InverseBooleanConverter.cs" />
+    <Compile Include="Interfaces\ISearcherService.cs" />
     <Compile Include="Models\Node.cs" />
-    <Compile Include="Models\Searcher.cs" />
+    <Compile Include="Services\SearcherService.cs" />
     <Compile Include="Resources\Templates\Selectors\SearchTemplteButtonsSelector.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
