@@ -1,0 +1,72 @@
+﻿<UserControl x:Class="SearchApp.Views.SearchView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SearchApp.Views"
+             xmlns:selectors="clr-namespace:SearchApp.Resources.Templates.Selectors"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <DataTemplate x:Key="WaitForStartTemplate">
+            <StackPanel HorizontalAlignment="Right" Grid.Row="3" Grid.Column="1" Orientation="Horizontal">
+                <Button Margin="3" MinWidth="100">Найти</Button>
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="InProgressTemplate">
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch">
+                <ProgressBar Margin="3" MinHeight="20" Value="10" Maximum="100" />
+                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                    <Button Margin="3" MinWidth="100">Пауза</Button>
+                    <Button Margin="3" MinWidth="100">Остановить</Button>
+                </StackPanel>
+            </StackPanel>
+        </DataTemplate>
+
+        <selectors:SearchTemplteButtonsSelector
+            x:Key="templateSelector"
+            InProgressTemplate="{StaticResource InProgressTemplate}"
+            WaitForStartTemplate="{StaticResource WaitForStartTemplate}" />
+
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Padding="3" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0">Искать в директории</TextBlock>
+        <Grid 
+            Grid.Row="0" Grid.Column="1"
+            DataContext="{Binding}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBox Grid.Column="0" Margin="3" Text="{Binding SearchDirectoryName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <CheckBox Grid.Column="1" Margin="3" VerticalAlignment="Center" HorizontalAlignment="Right" IsChecked="{Binding IncludeSubdirectories}">Включая сабдиректории</CheckBox>
+        </Grid>
+
+
+        <TextBlock Padding="3" VerticalAlignment="Center" Grid.Row="1" Grid.Column="0">Имя файл</TextBlock>
+        <TextBox Margin="3" Grid.Row="1" Grid.Column="1" Text="{Binding FileName, Mode=OneWayToSource}" />
+
+        <TextBlock Padding="3" VerticalAlignment="Center" Grid.Row="2" Grid.Column="0">Директория</TextBlock>
+        <TextBox Margin="3" Grid.Row="2" Grid.Column="1" Text="{Binding DirectoryName, Mode=OneWayToSource}" />
+
+        <ContentControl
+            Grid.Row="3"
+            Grid.ColumnSpan="2"
+            Content="{Binding InProgress, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+            ContentTemplateSelector="{StaticResource templateSelector}" />
+    </Grid>
+</UserControl>

@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.329
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SearchApp", "SearchApp\SearchApp.csproj", "{26B67E81-7130-42A7-BAA7-20759C899A8B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SearchAppTests", "SearchAppTests\SearchAppTests.csproj", "{AEF79D59-9F0B-411E-B118-9E26517F6D11}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{26B67E81-7130-42A7-BAA7-20759C899A8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26B67E81-7130-42A7-BAA7-20759C899A8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26B67E81-7130-42A7-BAA7-20759C899A8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26B67E81-7130-42A7-BAA7-20759C899A8B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AEF79D59-9F0B-411E-B118-9E26517F6D11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AEF79D59-9F0B-411E-B118-9E26517F6D11}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AEF79D59-9F0B-411E-B118-9E26517F6D11}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AEF79D59-9F0B-411E-B118-9E26517F6D11}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5B5D9529-D135-4067-981D-D6B90F5C42D4}
+	EndGlobalSection
+EndGlobal
