@@ -1,5 +1,6 @@
 ﻿using SearchApp.Interfaces;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -52,8 +53,25 @@ namespace SearchApp.Services
 
         private void Search(string path, SearchOption option)
         {
-            var files = Directory.GetFiles(path, "*", option);
-            var totalCount = files.Length;
+            ConcurrentBag<string> files = new ConcurrentBag<string>();
+
+            if (option == SearchOption.TopDirectoryOnly)
+            {
+                try
+                {
+                    files = new ConcurrentBag<string>(Directory.GetFiles(path).ToList());
+                }
+                catch (UnauthorizedAccessException e)
+                {
+                    Console.WriteLine(e);
+                }
+            }
+            else
+            {
+                GetFilesFromDirectory(path, files);
+            }
+
+            var totalCount = files.Count;
 
             foreach (var file in files)
             {
@@ -62,6 +80,38 @@ namespace SearchApp.Services
             }
 
             OnEnd?.Invoke();
+        }
+
+        private void GetFilesFromDirectory(string path, ConcurrentBag<string> files)
+        {
+            try
+            {
+                var filesInCurrentDirectory = Directory.GetFiles(path);
+                foreach (var s in filesInCurrentDirectory)
+                {
+                    files.Add(s);
+                }
+            }
+            catch (UnauthorizedAccessException e)
+            {
+                Console.WriteLine(e);
+            }
+
+            try
+            {
+                var directories = Directory.GetDirectories(path);
+                if (directories.Any())
+                {
+                    foreach (var directory in directories)
+                    {
+                        GetFilesFromDirectory(directory, files);
+                    }
+                }
+            }
+            catch (UnauthorizedAccessException e)
+            {
+                Console.WriteLine(e);
+            }
         }
     }
 }

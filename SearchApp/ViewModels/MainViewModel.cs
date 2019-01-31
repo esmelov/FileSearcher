@@ -11,10 +11,14 @@ namespace SearchApp.ViewModels
     internal class MainViewModel: BaseViewModel
     {
         private Node<DirectoryInfo> _currentDirectoryNode;
+
         private RelayCommand _onExpandNodeCommand;
+
         private ObservableCollection<Node<DirectoryInfo>> _directoryTree;
         private ObservableCollection<string> _findedFiles;
+
         private string _selectedFile;
+
         private bool _directoryTreeEnabled = true;
 
         public MainViewModel()
