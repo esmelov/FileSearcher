@@ -113,6 +113,10 @@ namespace SearchApp.ViewModels
         private void SearcherVM_InProgressEvent(bool obj)
         {
             DirectoryTreeEnabled = !obj;
+            if (obj)
+            {
+                FindedFiles.Clear();
+            }
         }
 
         private void SearcherVM_OnFindFile(string obj)

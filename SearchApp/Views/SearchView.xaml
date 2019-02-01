@@ -130,11 +130,23 @@
             Grid.Row="1" Grid.Column="0"
             Text="Имя файл" />
 
-        <TextBox
-            Margin="3"
+        <StackPanel
             Grid.Row="1" Grid.Column="1"
-            IsEnabled="{Binding InProgress, Converter={StaticResource inverseBooleanConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-            Text="{Binding FileName, Mode=OneWayToSource}" />
+            Orientation="Vertical"
+            HorizontalAlignment="Stretch">
+            <TextBox
+                Margin="3"
+                IsEnabled="{Binding InProgress, Converter={StaticResource inverseBooleanConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                Text="{Binding FileName, Mode=OneWayToSource}" />
+            <WrapPanel
+                Orientation="Horizontal"
+                HorizontalAlignment="Right">
+                <RadioButton Margin="3">Regexp</RadioButton>
+                <RadioButton Margin="3">Обычный</RadioButton>
+                <CheckBox Margin="3">Имя целиком</CheckBox>
+                <CheckBox Margin="3">Не учитывать регистр</CheckBox>
+            </WrapPanel>
+        </StackPanel>
 
         <TextBlock
             Padding="3"
